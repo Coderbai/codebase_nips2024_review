@@ -8,7 +8,6 @@ from util import exists, default
 from attention import LinearAttention, Attention
 
 
-# 残差模块，将输入加到输出上
 class Residual(nn.Module):
     def __init__(self, fn):
         super().__init__()
@@ -18,12 +17,10 @@ class Residual(nn.Module):
         return self.fn(x, *args, **kwargs) + x
 
 
-# 上采样（反卷积）
 def Upsample(dim):
     return nn.ConvTranspose2d(dim, dim, 4, 2, 1)
 
 
-# 下采样
 def Downsample(dim):
     return nn.Conv2d(dim, dim, 4, 2, 1)
 
@@ -242,19 +239,9 @@ class Unet(nn.Module):
     def forward(self, x, time, x_cond=None):
         # print('x0', x.shape)
         x = self.init_conv(x)
-        # print('x1', x.shape)
-        # print('time', time.shape)
+
         t = self.time_mlp(time) if exists(self.time_mlp) else None
-        # print('t', t.shape)
-        # print('x_cond', x_cond.shape)
-        # cond = self.cond_fc(self.cond_conv(x_cond).view(x_cond.shape[0], -1)) if exists(self.cond_fc) else None
-        # print('cond', cond.shape)
-        # print('t', t[0])
-        # print('cond', cond[0])
-        # if np.random.random() < 0.1:
-        #     cond = None
-        # if cond is not None:
-        #     t += cond
+
         h = []
 
         # downsample

@@ -63,7 +63,7 @@ if __name__ == '__main__':
     parser.add_argument('--model_path', type=str, default='checkpoint')
     parser.add_argument('--dataset_path', type=str, default='data')
     parser.add_argument('--ema', action='store_true')
-    args = parser.parse_args()  # 获取所有参数
+    args = parser.parse_args()
     print(args)
     if not os.path.exists('./exp/' + args.exp):
         os.makedirs('./exp/' + args.exp)

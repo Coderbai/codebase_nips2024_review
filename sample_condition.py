@@ -128,9 +128,7 @@ def main():
     print('args.batch_size', args.batch_size)
     dataset = get_dataset(**data_config, transforms=transform, mask_gen=mask_gen)
     print('len(dataset)1', len(dataset))
-    # 确定你想要的子集的索引
     indices = list(range(args.start, args.start+2500))
-    # 创建子集
     subset = Subset(dataset, indices)
     print('len(subset)', len(subset))
     loader = get_dataloader(subset, batch_size=args.batch_size, num_workers=0, train=bool(args.shuffle))

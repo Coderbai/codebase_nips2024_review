@@ -27,11 +27,9 @@ def p_losses(denoise_model, x_start, x_cond, matrix_inpainting1, matrix_inpainti
     alpha, temperature = 0.5, 1
     predicted_noise = 0.
 
-    # 先采样噪声
     if noise is None:
         noise = torch.randn_like(x_start)
 
-    # 用采样得到的噪声去加噪图片
     betas_t = extract(betas, t, x_start.shape)
     sqrt_one_minus_alphas_cumprod_t = extract(sqrt_one_minus_alphas_cumprod, t, x_start.shape)
     sqrt_recip_alphas_t = extract(sqrt_recip_alphas, t, x_start.shape)
@@ -40,8 +38,6 @@ def p_losses(denoise_model, x_start, x_cond, matrix_inpainting1, matrix_inpainti
     predicted_noise = denoise_model(x_noisy, t).sample  # torch.Size([512, 1, 28, 28])
     predicted_signal_mean = sqrt_recip_alphas_t * (x_noisy - betas_t * predicted_noise / sqrt_one_minus_alphas_cumprod_t)
 
-
-    # 根据加噪了的图片去预测采样的噪声
     if loss_type == 'l1':
         pass
         # loss = F.l1_loss(noise, predicted_noise) + F.l1_loss(x_start, x_end)
